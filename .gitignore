@@ -1,4 +1,10 @@
 node_modules
+
+# ENV
 *.env.*
 *.env
+
+# LOG
+logs
+src/logs
 *.log
