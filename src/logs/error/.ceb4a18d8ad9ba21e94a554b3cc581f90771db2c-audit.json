@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": false,
+        "amount": 30
+    },
+    "auditLog": "/home/mjn/projects/link-socket/src/logs/error/.ceb4a18d8ad9ba21e94a554b3cc581f90771db2c-audit.json",
+    "files": [
+        {
+            "date": 1665690306227,
+            "name": "/home/mjn/projects/link-socket/src/logs/error/2022-10-13.log",
+            "hash": "16cced98825fd1b9c87d134662af585e901252e56d8a0aaee9bbd9b7730ec29c"
+        }
+    ],
+    "hashType": "sha256"
+}
