@@ -1,4 +1,4 @@
-import express, { Router } from 'express';
+import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
 import swaggerJSDoc from 'swagger-jsdoc';
@@ -7,24 +7,28 @@ import { NODE_ENV, PORT, LOG_FORMAT, ORIGIN, CREDENTIALS } from '@config';
 import { logger, stream } from '@utils/logger';
 import errorMiddleware from '@middlewares/error.middleware';
 import { Routes } from './interfaces/routes.interface';
+import { Server , createServer } from 'http';
 
 class App {
   public app: express.Application;
+  private server: Server;
   public env: string;
   public port: string | number;
-
   constructor(router: Routes[]) {
     this.app = express();
     this.env = NODE_ENV || 'development';
     this.port = PORT || 3000;
 
+    this.initializeServer();
     this.initializeMiddlewares();
     this.initializeRoutes(router);
     this.initializeSwagger();
     this.initializeErrorHandling();
   }
+
+
   public listen() {
-    this.app.listen(this.port, () => {
+    return this.server.listen(this.port, () => {
       logger.info(`=================================`);
       logger.info(`======= ENV: ${this.env} =======`);
       logger.info(`🚀 App listening on the port ${this.port}`);
@@ -32,8 +36,16 @@ class App {
     });
   }
 
-  public getServer() {
+  public getApp() {
     return this.app;
+  }
+
+  public getServer() {
+    return this.server;
+  }
+
+  private initializeServer() {
+    this.server =  createServer(this.app);
   }
 
   private initializeMiddlewares() {
@@ -41,8 +53,6 @@ class App {
     this.app.use(cors({ origin: ORIGIN, credentials: CREDENTIALS }));
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
-    // this.app.use(hpp());
-    // this.app.use(helmet());
   }
 
   private initializeRoutes(routes: Routes[]) {
